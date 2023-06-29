@@ -4,7 +4,7 @@ name: Deploy static content to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    branches: ["master"]
     
   workflow_dispatch:
 
@@ -33,13 +33,12 @@ jobs:
         id: pages
       - name: Install and Build
         run: |
-          cd app
           npm install
           npm run build 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1.0.7
         with:
-          path: ./app/dist
+          path: ./dist
           name: artifact
   deploy:
     runs-on: ubuntu-latest
