@@ -1,54 +1,47 @@
-# CO'clock Working, Vite et bien
+# Svelte + Vite
 
-## Objectif
+This template should help get you started developing with Svelte in Vite.
 
-Préparer une base de projet autours de Vite pour avancer CO'clock Working. Cette base de projet nous permettra d'utiliser des outils comme SCSS et Svelte. Nous découvrirons ces outils dans les jours suivants.
+## Recommended IDE Setup
 
-## Comment ? 
+[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
 
-### Énoncé débrouillard
+## Need an official Svelte framework?
 
-L'objectif est d'initialiser un projet Vite en utilisant le template Svelte, et de faire en sorte qu'il affiche la page d'accueil du projet CO'clock Working 
+Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
 
+## Technical considerations
 
-### Étape 1
+**Why use this over SvelteKit?**
 
-Après avoir cloné ce dépôt, initialise un projet vite. On peut initialiser un projet en utilisant divers template. Nous allons utiliser le template qui nous permettra d'utiliser Svelte, qui sera le Framework que nous utiliserons par la suite.
+- It brings its own routing solution which might not be preferable for some users.
+- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
 
+This template contains as little as possible to get started with Vite + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
 
-`npm create vite@latest . -- --template svelte`
+Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
 
-Il faut ensuite lancer `npm install` pour télécharger toutes les dépendances
+**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
 
-Nous pouvons enfin tester le bon fonctionnement en lançant la commande
+Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
 
-`npm run dev`
+**Why include `.vscode/extensions.json`?**
 
-### Étape 2
+Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
 
-Regardons un peu la base de code générée. Les fichiers qui nous intéressent sont les suivants : 
-- à la racine nous retrouvons différents fichiers de configuration.
-- Nous retrouvons aussi le fichier `index.html`. Contrairement à ce qu'on pourrait imaginer, nous n'allons pas toucher à ce fichier. Vite va utiliser ce fichier comme base pour y insérer le code de nos différentes pages.
-- Le dossier `src` est le dossier qui va contenir tout le site. Ici 2 fichiers vont nous intéresser
-  - App.svelte, qui va pour l'instant contenir le code HTML de notre page d'accueil, on le fera évoluer plus tard.
-  - main.js, qui est le point d'entrée de notre application. Il initialise le projet Svelte et surtout il inclut toutes les ressources de notre projet, dont notre CSS.
-  
+**Why enable `checkJs` in the JS template?**
 
-### Étape 3
+It is likely that most cases of changing variable types in runtime are likely to be accidental, rather than deliberate. This provides advanced typechecking out of the box. Should you like to take advantage of the dynamically-typed nature of JavaScript, it is trivial to change the configuration.
 
-Nous allons vider le fichier `App.svelte` de son contenu pour le remplacer par le HTML de la page d'accueil de notre projet CO'clock Working. Étant donné que Vite va inclure le code au sein d'une page web, nous allons seulement inclure le contenu du `<body>` de notre page.
+**Why is HMR not preserving my local component state?**
 
-Nous pouvons aussi supprimer le fichier `lib/Counter.svelte`. C'est un fichier de démonstration pour illustrer le fonctionnement de Svelte, nous verrons cela plus tard.
+HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
 
-On peut tester en allant visiter l'URL fournie par la commande `npm run dev`. La page devrait afficher la home du projet, mais sans les styles. Nous allons remédier à ça.
+If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
 
-
-### Étape 4
-
-Dans cette étape, nous allons importer les styles de CO'clock Working dans notre site.  Un fichier app.css est présent, on voit qu'il est lu par Vite car il est importé dans `main.js`. Nous allons donc l'utiliser pour y stocker le CSS de notre site.
-
-Nous allons donc copier les styles du projet dans ce fichier.
-
-### Étape 5
-
-C'est fini, nous n'avons plus qu'à tester ! 
+```js
+// store.js
+// An extremely simple external store
+import { writable } from 'svelte/store'
+export default writable(0)
+```

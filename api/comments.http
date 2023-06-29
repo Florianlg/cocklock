@@ -1,0 +1,7 @@
+POST https://xxx.directus.app/items/comment HTTP/1.1
+content-type: application/json
+Authorization: Bearer xxxxxxx
+
+{
+    "title": "Mon super commentaire"
+}
